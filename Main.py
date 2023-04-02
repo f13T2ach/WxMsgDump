@@ -32,7 +32,7 @@ def main():
 
     print("WeChatDumper%s | 微信聊天记录导出"%VER)
     print()
-    print("Copyright(c) UvgenTechno 2023")
+    print("Copyright(c) F13T2ach 2023")
     print("----------------------------------------")
     print("[+]输入本地路径（微信->左下角->设置->文件管理->打开文件夹->复制路径）在开头输入“!”号表示跳过解密操作" )
     wx_path = input("[>]") +"\\Msg"
