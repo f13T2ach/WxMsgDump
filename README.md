@@ -1,5 +1,10 @@
+<div align="center">
+
 # WxMsgDump
+
 **开源的导出微信聊天记录的程序**
+
+</div>
 
 ## 警告
 
