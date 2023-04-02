@@ -55,8 +55,8 @@ def main():
         #    DBManagement.main()
         #    return
         #else:
-            print("[-]路径无效。请注意，你可能忽略了点击“打开文件夹”按钮这个步骤")
-            exit(-1)
+        print("[-]路径无效。请注意，你可能忽略了点击“打开文件夹”按钮这个步骤")
+        exit(-1)
     
     # 获取Msg目录下的表
     for path in os.listdir(wx_path):
