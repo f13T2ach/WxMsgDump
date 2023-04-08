@@ -20,7 +20,6 @@
 pip install pywin32
 pip install pymem
 pip install pycryptodome
-pip install keyboard
 ```
 
 ## 运行方法
