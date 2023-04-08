@@ -29,8 +29,11 @@ pip install keyboard
 python Main.py
 ```
 ## 更新日志
+
 **2023/4/8 1.1Update** 
+
 1.支持自动获取用户文件地址，无需手动输入
+
 2.其它改动
 
 ## 鸣谢
