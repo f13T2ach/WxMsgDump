@@ -12,7 +12,7 @@
 
 **运行系统:** Windows 7至11
 
-**版本** 1.0[B]
+**版本** 1.1
 
 请在Cmd中运行以下代码，来下载依赖库（如果没有）
 
@@ -28,9 +28,15 @@ pip install keyboard
 ```
 python Main.py
 ```
+## 更新日志
+**2023/4/8 1.1Update** 
+1.支持自动获取用户文件地址，无需手动输入
+2.其它改动
 
 ## 鸣谢
 **lich0821 / 微信数据库逆向和数据库密钥逆向** https://github.com/lich0821/WeChatDB
+
+**x1hy9 / 微信进程逆向** https://github.com/x1hy9/WeChatUserDB
 
 ## 警告
 
