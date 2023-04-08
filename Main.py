@@ -5,12 +5,14 @@
 # The personal chat history of citizens of the People's Republic of China is protected by law.
 # 版本号
 VER = "V1.0[B]"
-import GetWeChatAesKey
+import GetWeChatInfo
 import CrackWeChatDB
 import os
 import sys
 import sqlite3
 import SQLManager
+import keyboard
+from win32com.shell import shell
 
 
 # Msg目录下的表
@@ -28,19 +30,49 @@ wxlist = []
 
 def main():
     res = [] #所有db文件的名称数组
-    isSkipDc = False
+    isSkipDc = False #跳过解密
 
     print("WeChatDumper%s | 微信聊天记录导出"%VER)
     print()
-    print("Copyright(c) F13T2ach 2023")
+    print("Copyright(c) UvgenTechno 2023 Authorized")
     print("----------------------------------------")
-    print("[+]输入本地路径（微信->左下角->设置->文件管理->打开文件夹->复制路径）在开头输入“!”号表示跳过解密操作" )
-    wx_path = input("[>]") +"\\Msg"
-    if wx_path.startswith("!"):
-        isSkipDc = True
-        wx_path = wx_path.lstrip('!')
+    print("[+]Follow me on Github: https://github.com/f13T2ach/WxMsgDump 正在获取你的个人信息...")
+
+    # 获取密钥和其它个人信息
+    ret =  GetWeChatInfo.main()
+    aeskey = ret[0]
+    wxid = ret[1]
+    wxprofile = ret[2]
+
+    # 自动获取文件路径
+    win_user = os.path.expandvars('$HOMEPATH')
+    wx_config = open(os.getenv("SystemDrive") + win_user + '\\AppData\\Roaming\\Tencent\\WeChat\\All Users\\config\\3ebffe94.ini')
+
+    if wx_config.read() == 'MyDocument:':
+        wx_path = shell.SHGetFolderPath(0, 5, None, 0)+"\\WeChat Files\\"+wxid+"\\Msg" # 如果目录在 文档 下
+    else:
+        wx_path = wx_config.read() + "\\WeChat Files\\"+wxid+"\\Msg"
     dir_path = wx_path + "\\Multi"
-    
+
+    #向用户问好
+    print("[:)]你好，"+wxprofile+"！解析到你的文件地址为"+wx_path+"，工作开始")
+
+
+    # 检查是否有留存过的解密文件
+    files = os.listdir(dir_path)
+
+    for name in files:
+        if name.endswith(".dec.db"):
+            key = input("[>]发现上次解密过的文件。需要跳过解密步骤->Y 删除全部解密文件并退出->D 覆盖解密->其它:").capitalize()
+            if key == 'Y':
+                isSkipDc = True
+            if key == 'D':
+                del_decryptf(wx_path)
+                del_decryptf(dir_path)
+                input("[+]操作完成，任意键退出")
+                exit(0)
+            break
+
     # 获取Mutil下的表
     try:
         for path in os.listdir(dir_path):
@@ -68,8 +100,7 @@ def main():
         print("[+]解密完成，没有发现任何聊天文件，或者已经解密过")
         exit(0)
     
-    # 获取密钥
-    aeskey = GetWeChatAesKey.main()
+    
     if isSkipDc is not True:
         #删除以前的解密
         for file_name in os.listdir(dir_path):
@@ -117,6 +148,8 @@ def main():
         if repeat_count == 1:
             print("[!]找不到此聊天: ",aim)
 
+
+
 def decryptMsg(res,dir_path,wx_path,aeskey):
     for path in res:
         if(path.startswith("MSG")): # 解密Mutil下的文件
@@ -127,6 +160,12 @@ def decryptMsg(res,dir_path,wx_path,aeskey):
              # 覆盖原来的进度条
             print("\r","                                                                                  ",end="",flush=True)
     print()
+
+def del_decryptf(path):
+    for root , dirs, files in os.walk(path):
+        for name in files:
+            if name.endswith(".dec.db"):   #指定要删除的格式，这里是jpg 可以换成其他格式
+                os.remove(os.path.join(root, name))
 
 
 if __name__ == '__main__':
