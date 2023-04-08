@@ -4,7 +4,7 @@
 # 中华人民共和国公民的聊天记录受到法律保护。
 # The personal chat history of citizens of the People's Republic of China is protected by law.
 # 版本号
-VER = "V1.0[B]"
+VER = "V1.1"
 import GetWeChatInfo
 import CrackWeChatDB
 import os
