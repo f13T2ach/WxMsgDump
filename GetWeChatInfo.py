@@ -64,7 +64,8 @@ def getUserBasicInfo():
         # base_address = base_address[len(base_address) - 1]
         bytes_path1 = (i).to_bytes(4, byteorder="little", signed=True)
         cc = pattern_scan_all(p.process_handle, bytes_path1, return_multiple=True)
-
+        if cc == []:
+            continue
         if cc[0] > wechat_addr:
             base_address = cc[0]
             break
