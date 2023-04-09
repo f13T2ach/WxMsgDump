@@ -50,7 +50,7 @@ def getAesKey(pm, base, offset):
 
     return result.decode()
 
-def getUserBasicInfo():
+def getUserBasicInfo(base):
     p = pymem.Pymem()
     p.open_process_from_name("WeChat.exe")
     base_address = pymem.process.module_from_name(p.process_handle, "wechatwin.dll").lpBaseOfDll
@@ -81,10 +81,8 @@ def getUserBasicInfo():
     return WXID,WxProfile
 
 def pattern_scan_all(handle, pattern, *, return_multiple=False):
-
     from pymem.pattern import scan_pattern_page
     next_region = 0
-
     found = []
     user_space_limit = 0x7FFFFFFF0000 if sys.maxsize > 2 ** 32 else 0x7fff0000
     while next_region < user_space_limit:
@@ -94,16 +92,12 @@ def pattern_scan_all(handle, pattern, *, return_multiple=False):
             pattern,
             return_multiple=return_multiple
         )
-
         if not return_multiple and page_found:
             return page_found
-
         if page_found:
             found += page_found
-
     if not return_multiple:
         return None
-
     return found
 
 def main():
@@ -120,7 +114,7 @@ def main():
         error()
     aesKey = getAesKey(pm, base, wxhex_offset)
     
-    ret = getUserBasicInfo()
+    ret = getUserBasicInfo(base)
     wxid = ret[0].decode()
     wxprofile = ret[1].decode()
     

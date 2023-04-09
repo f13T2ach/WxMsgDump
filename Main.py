@@ -24,7 +24,6 @@ micromsg_path = ""
 # MSGn.db文件数组
 msgn_path = []
 
-
 # 聊天列表 下标对应UserName,Alias,Remark,NickName
 wxlist = []
 
@@ -32,7 +31,7 @@ def main():
     res = [] #所有db文件的名称数组
     isSkipDc = False #跳过解密
 
-    print("WeChatDumper%s | 微信聊天记录导出"%VER)
+    print("WxMsgDump%s | 微信聊天记录导出"%VER)
     print()
     print("Copyright(c) UvgenTechno 2023 Authorized")
     print("----------------------------------------")
