@@ -15,7 +15,7 @@ def get_chatlist(path):
 def msg_export(path,wxid,chatname):
     conn = sqlite3.connect(path)
     try:
-        cursor = conn.execute("SELECT Type,IsSender,CreateTime,StrTalker,StrContent from MSG WHERE StrTalker = '%s'"% wxid)
+        cursor = conn.execute("SELECT Type,IsSender,CreateTime,StrTalker,StrContent from MSG WHERE StrTalker = '%s'"% wxid+" ORDER BY CreateTime ASC")
         cursor = cursor.fetchall()
     except Exception as ex:
         print("[-]不存在该聊天的聊天记录，这是异常信息: ",ex)
