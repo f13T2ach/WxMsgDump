@@ -3,6 +3,8 @@ import os
 import time
 import ProgressBar
 
+workDirName = "微信聊天导出"
+
 def get_chatlist(path):
     conn = sqlite3.connect(path)
     cursor = conn.execute("SELECT UserName,Alias,Remark,NickName from Contact")
@@ -20,7 +22,12 @@ def msg_export(path,wxid,chatname):
         conn.close()
         return False
     desktop_path = os.path.abspath(".")  # 存放路径
-    full_path = desktop_path + "\\"+ chatname + '.csv' 
+    full_path =  "%s\\%s\\%s(%s).csv"%(desktop_path,workDirName,chatname,wxid) 
+
+    folder = os.path.exists(desktop_path+"\\"+workDirName)
+    if not folder:
+        os.makedirs(desktop_path+"\\"+workDirName)
+
     file = open(full_path, 'w', encoding='utf-8-sig')
     # 写入表头
     file.write("时间,对方,你的回复\n")
