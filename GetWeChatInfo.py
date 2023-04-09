@@ -3,27 +3,23 @@
 
 import binascii
 import struct
-
 import pymem
 import sys
 from urllib import parse
 from win32api import HIWORD, LOWORD, GetFileVersionInfo
 
 def error():
-    print("[-]Exit code : -1")
+    print("[-]运行中止。请在Github提出Issue，任意键退出")
+    input()
     exit(-1)
 
-
-def getVersionBase(pm):
-    WeChatWindll_base = 0
+def getVersion(pm):
     WeChatWindll_path = ""
     for m in list(pm.list_modules()):
         path = m.filename
         if path.endswith("WeChatWin.dll"):
-            WeChatWindll_base = m.lpBaseOfDll
             WeChatWindll_path = path
             break
-
     if not WeChatWindll_path:
         print("[-]获取微信版本失败")
         error()
@@ -33,26 +29,9 @@ def getVersionBase(pm):
     msv = version['FileVersionMS']
     lsv = version['FileVersionLS']
     version = f"{str(HIWORD(msv))}.{str(LOWORD(msv))}.{str(HIWORD(lsv))}.{str(LOWORD(lsv))}"
+    return version
 
-    return version, WeChatWindll_base
-
-
-def getAesKey(pm, base, offset):
-    try:
-        result = pm.read_bytes(base + offset, 4)    # 读取 AES Key 的地址
-        addr = struct.unpack("<I", result)[0]       # 地址为小端 4 字节整型
-        aesKey = pm.read_bytes(addr, 0x20)          # 读取 AES Key
-        result = binascii.b2a_hex(aesKey)           # 解码
-    except Exception as e:
-        print(f"{e}")
-        print(f"[-]微信未登录")
-        error()
-
-    return result.decode()
-
-def getUserBasicInfo(base):
-    p = pymem.Pymem()
-    p.open_process_from_name("WeChat.exe")
+def searchBaseAddress(p):
     base_address = pymem.process.module_from_name(p.process_handle, "wechatwin.dll").lpBaseOfDll
     wechat_addr = base_address
     bytes_path = b'-----BEGIN PUBLIC KEY-----\n...'
@@ -69,16 +48,23 @@ def getUserBasicInfo(base):
         if cc[0] > wechat_addr:
             base_address = cc[0]
             break
-    
+    return base_address
+
+def getUserBasicInfo(p,base_address):
+    # 获取wxid
     int_wxid_len = p.read_int(base_address - 0x44)
     wxid_addr = p.read_int(base_address - 0x54)
     WXID = p.read_bytes(wxid_addr, int_wxid_len)
 
-    # Get_UserName
+    # 获取用户名
     int_wxprofile_len = p.read_int(base_address - 0x5c)
     WxProfile = p.read_bytes(base_address - 0x6c, int_wxprofile_len)
 
-    return WXID,WxProfile
+    # 获取aeskey
+    int_SqliteKey_len = p.read_int(base_address - 0x8c)
+    aesKey = p.read_bytes(p.read_int(base_address - 0x90), int_SqliteKey_len)
+
+    return WXID.decode(),WxProfile.decode(),binascii.b2a_hex(aesKey).decode()
 
 def pattern_scan_all(handle, pattern, *, return_multiple=False):
     from pymem.pattern import scan_pattern_page
@@ -102,29 +88,20 @@ def pattern_scan_all(handle, pattern, *, return_multiple=False):
 
 def main():
     try:
-        pm = pymem.Pymem("WeChat.exe")
+        p = pymem.Pymem()
+        p.open_process_from_name("WeChat.exe")
     except Exception as e:
-        print(f"[-]异常抛出：{e} 微信登录状态异常")
+        print(f"[-]请正确启动微信：{e} ")
         error()
+    base = searchBaseAddress(p)
+    wxid,wxprofile,aesKey = getUserBasicInfo(p,base)
 
-    version, base = getVersionBase(pm)
-    wxhex_offset = list(GLOBAL_OFFSETS.get(version, None))[4]
-    if not wxhex_offset:
-        print(f"[-]不支持的版本 {version} 请访问其它项目获取")
-        error()
-    aesKey = getAesKey(pm, base, wxhex_offset)
-    
-    ret = getUserBasicInfo(base)
-    wxid = ret[0].decode()
-    wxprofile = ret[1].decode()
-    
-    
-
-    print(f"[+]微信版本：{version}\n[+]微信基址：{hex(base)}")
+    print(f"[+]微信版本：{getVersion(p)}\n[+]微信基址：{hex(base)}")
     print(f"[+]数据库密钥：{aesKey}")
     print(f"[+]WXID：{wxid}")
     return aesKey,wxid,wxprofile
 
+'''
 GLOBAL_OFFSETS = {
     "3.2.1.154":
     {
@@ -439,3 +416,4 @@ GLOBAL_OFFSETS = {
         50321676
     }
 }
+'''
