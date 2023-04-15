@@ -36,7 +36,7 @@ python Main.py
 
 2.双击运行目录内唯一的一个exe文件
 
-## 更新日志 / UPDATE LOG
+## 更新 / UPDATE
 
 ### 2023/4/8 1.1 Update
 
@@ -90,3 +90,4 @@ python Main.py
 
 **您应该在下载保存，编译使用本项目的24小时内，删除本项目的源代码和（编译出的）程序。**
 
+## 更新历史 / UPDATE HISTORY 
