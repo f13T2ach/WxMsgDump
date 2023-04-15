@@ -6,7 +6,7 @@
 
 </div>
 
-## 介绍
+## INTRODUCTION / 介绍
 
 **运行要求:** Python 2.0以上环境
 
@@ -22,7 +22,7 @@ pip install pymem
 pip install pycryptodome
 ```
 
-## 运行方法
+## RUNNING METHOD / 运行方法
 
 方法一、运行源码
 
@@ -36,11 +36,11 @@ python Main.py
 
 2.双击运行目录内唯一的一个exe文件
 
-## 更新日志
+## UPDATE LOG / 更新日志
 
 ### 2023/4/8 1.1 Update
 
-**Add / 新增**
+**Add**
 
 1.支持自动获取用户文件地址，无需手动输入；
 
@@ -50,18 +50,19 @@ python Main.py
 
 4.进度条样式等若干项；
 
-**Repair / 修正**
+**Repair**
 
 4.修复SqlManager类里的一个疏忽：没有根据时间戳排序，导致导出的数据异常；
 
 5.修复逻辑层面的疏忽：简单粗暴的合并聊天文件，导致只能读取MSG0.dec.db中的聊天记录。
 
-## 鸣谢
+## ACKOWNLEDGEMENT / 鸣谢
+
 **lich0821 / 微信数据库逆向和数据库密钥逆向** https://github.com/lich0821/WeChatDB
 
 **x1hy9 / 微信进程逆向** https://github.com/x1hy9/WeChatUserDB
 
-## 警告
+## WARNING / 警告
 
 **逆向是微信条款中不允许的行为，窃取、篡改聊天记录是违法行为。程序仅供学习交流。**
 
