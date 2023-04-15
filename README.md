@@ -36,7 +36,7 @@ python Main.py
 
 2.双击运行目录内唯一的一个exe文件
 
-## UPDATE LOG / 更新日志
+## 更新日志 / UPDATE LOG
 
 ### 2023/4/8 1.1 Update
 
