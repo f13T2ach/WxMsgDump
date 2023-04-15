@@ -35,7 +35,7 @@ def main():
     print()
     print("Copyright(c) UvgenTechno 2023 Authorized")
     print("----------------------------------------")
-    print("[+]Follow me on Github: https://github.com/f13T2ach/WxMsgDump 正在获取你的个人信息...")
+    print("[+]Follow me on Github: https://github.com/f13T2ach/WxMsgDump")
 
     # 获取密钥和其它个人信息
     ret =  GetWeChatInfo.main()
@@ -53,8 +53,7 @@ def main():
         wx_path = wx_config.read() + "\\WeChat Files\\"+wxid+"\\Msg"
     dir_path = wx_path + "\\Multi"
 
-    #向用户问好
-    print("[:)]你好，"+wxprofile+"！解析到你的文件地址为"+wx_path+"，工作开始")
+    print("[+]微信号: "+wxprofile+" 工作路径: "+wx_path)
 
 
     # 检查是否有留存过的解密文件
@@ -62,7 +61,7 @@ def main():
 
     for name in files:
         if name.endswith(".dec.db"):
-            key = input("[>]发现上次解密过的文件。需要跳过解密步骤->Y 删除全部解密文件并退出->D 覆盖解密->其它:").capitalize()
+            key = input("[>]发现上次解密过的文件。跳过解密步骤->Y 删除全部解密文件->D 覆盖解密->回车:").capitalize()
             if key == 'Y':
                 isSkipDc = True
             if key == 'D':
@@ -120,32 +119,29 @@ def main():
         elif path in msg_table:
             if path == "MicroMsg.db":
                 micromsg_path = wx_path+"\\"+path+".dec.db"
-    print("[+]正在合并")
-    msg_path = SQLManager.batch_merge(msgn_path)
-    
+
     print("[+]正在获取聊天列表")
     wxlist = SQLManager.get_chatlist(micromsg_path)
 
     while True:
         print("[+]请输入要导出的聊天名称，或者你给他/她的备注。空表示退出操作")
-        aim = input("[>]")
-        if aim=="":
+        aimChat = input("[>]")
+        if aimChat=="":
             break
         repeat_count = 1
         for chat in wxlist:
             #print(chat[3])
-            if chat[3]==aim or chat[2]==aim:
+            if chat[3]==aimChat or chat[2]==aimChat:
                 print("============FOUND TARGET===========")
                 print("[+]匹配到第"+str(repeat_count)+"个聊天: ",chat[0])
                 print("[+]微信号: ", chat[1])
                 print("[+]备注: ",chat[2])
                 print("[+]昵称: ",chat[3])
-                if SQLManager.msg_export(msg_path,chat[0],chat[3]) is not True:
-                    print("[!]在此表中出现异常: ",msg_path)
+                export_msg(msgn_path,chat[0],chat[3]+" "+chat[1])
                 repeat_count = repeat_count+1
                 print("=============END OUTPUT============")
         if repeat_count == 1:
-            print("[!]找不到此聊天: ",aim)
+            print("[!]找不到此聊天: ",aimChat)
 
 
 
@@ -166,6 +162,11 @@ def del_decryptf(path):
             if name.endswith(".dec.db"):   #指定要删除的格式，这里是jpg 可以换成其他格式
                 os.remove(os.path.join(root, name))
 
+def export_msg(msg_paths,wxid,chatname):
+    outputPath = ""
+    for path in msg_paths:
+        flag,outputPath = SQLManager.msg_export(path,wxid,chatname,msg_paths.index(path)+1)
+    print("[+]完成，导出到"+outputPath)
 
 if __name__ == '__main__':
     main()

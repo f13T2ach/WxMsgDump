@@ -12,7 +12,7 @@ def get_chatlist(path):
     conn.close()
     return output
 
-def msg_export(path,wxid,chatname):
+def msg_export(path,wxid,chatname,exportId):
     conn = sqlite3.connect(path)
     try:
         cursor = conn.execute("SELECT Type,IsSender,CreateTime,StrTalker,StrContent from MSG WHERE StrTalker = '%s'"% wxid+" ORDER BY CreateTime ASC")
@@ -20,7 +20,7 @@ def msg_export(path,wxid,chatname):
     except Exception as ex:
         print("[-]不存在该聊天的聊天记录，这是异常信息: ",ex)
         conn.close()
-        return False
+        return False,ex
     desktop_path = os.path.abspath(".")  # 存放路径
     full_path =  "%s\\%s\\%s(%s).csv"%(desktop_path,workDirName,chatname,wxid) 
 
@@ -28,9 +28,13 @@ def msg_export(path,wxid,chatname):
     if not folder:
         os.makedirs(desktop_path+"\\"+workDirName)
 
-    file = open(full_path, 'w', encoding='utf-8-sig')
-    # 写入表头
-    file.write("时间,对方,你的回复\n")
+    # 判断是否是追加
+    if os.path.exists(full_path) or exportId > 1:
+        file = open(full_path, 'a', encoding='utf-8-sig')
+    else:
+        file = open(full_path, 'w', encoding='utf-8-sig')
+        # 写入表头
+        file.write("时间,对方,你的回复\n")
 
     for msg in cursor:
         date=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(msg[2])) #转换时间戳
@@ -54,14 +58,13 @@ def msg_export(path,wxid,chatname):
         elif msg[1]==0:
             file.write(str(date)+","+str(content)+", \n")
         
-        ProgressBar.progress_bar("正在导出第"+str(cursor.index(msg)+1)+"条, 共"+str(len(cursor))+"条",cursor.index(msg)+1,len(cursor))
+        ProgressBar.progress_bar("正在导出第"+str(exportId)+"个表中的第"+str(cursor.index(msg)+1)+"条, 共"+str(len(cursor))+"条",cursor.index(msg)+1,len(cursor))
         msg=[]
     
     print()
-    print("[+]完成，导出到",full_path)
     file.close()
     conn.close()
-    return True
+    return True,full_path
 
 def merge_databases(db1, db2):
     con = sqlite3.connect(db1)
