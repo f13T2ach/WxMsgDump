@@ -64,7 +64,7 @@ python Main.py
 
 ## 贡献墙 / CONTRIBUTION
 
-*注：*提出有效Issue，或者建设性意见的，可以加入贡献墙
+** 注: **提出有效Issue，或者建设性意见的，可以加入贡献墙
 
 ## 警告 / WARNING
 
