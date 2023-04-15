@@ -6,7 +6,7 @@
 
 </div>
 
-## INTRODUCTION / 介绍
+## 介绍 / INTRODUCTION
 
 **运行要求:** Python 2.0以上环境
 
@@ -22,7 +22,7 @@ pip install pymem
 pip install pycryptodome
 ```
 
-## RUNNING METHOD / 运行方法
+## 运行方法 / RUNNING METHOD
 
 方法一、运行源码
 
@@ -56,13 +56,17 @@ python Main.py
 
 5.修复逻辑层面的疏忽：简单粗暴的合并聊天文件，导致只能读取MSG0.dec.db中的聊天记录。
 
-## ACKOWNLEDGEMENT / 鸣谢
+## 鸣谢 / ACKOWNLEDGEMENT
 
 **lich0821 / 微信数据库逆向和数据库密钥逆向** https://github.com/lich0821/WeChatDB
 
 **x1hy9 / 微信进程逆向** https://github.com/x1hy9/WeChatUserDB
 
-## WARNING / 警告
+## 贡献墙 / CONTRIBUTION
+
+*注：*提出有效Issue，或者建设性意见的，可以加入贡献墙
+
+## 警告 / WARNING
 
 **逆向是微信条款中不允许的行为，窃取、篡改聊天记录是违法行为。程序仅供学习交流。**
 
