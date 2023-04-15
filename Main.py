@@ -137,7 +137,7 @@ def main():
                 print("[+]微信号: ", chat[1])
                 print("[+]备注: ",chat[2])
                 print("[+]昵称: ",chat[3])
-                export_msg(msgn_path,chat[0],chat[3]+" "+chat[1])
+                export_msg(msgn_path,chat[0],chat[3],chat[1])
                 repeat_count = repeat_count+1
                 print("=============END OUTPUT============")
         if repeat_count == 1:
@@ -162,10 +162,10 @@ def del_decryptf(path):
             if name.endswith(".dec.db"):   #指定要删除的格式，这里是jpg 可以换成其他格式
                 os.remove(os.path.join(root, name))
 
-def export_msg(msg_paths,wxid,chatname):
+def export_msg(msg_paths,uuid,nick,wxid):
     outputPath = ""
     for path in msg_paths:
-        flag,outputPath = SQLManager.msg_export(path,wxid,chatname,msg_paths.index(path)+1)
+        flag,outputPath = SQLManager.msg_export(path,uuid,nick,wxid,msg_paths.index(path)+1)
     print("[+]完成，导出到"+outputPath)
 
 if __name__ == '__main__':

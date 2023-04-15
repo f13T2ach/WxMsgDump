@@ -12,17 +12,17 @@ def get_chatlist(path):
     conn.close()
     return output
 
-def msg_export(path,wxid,chatname,exportId):
+def msg_export(path,uuid,nick,wxid,exportId):
     conn = sqlite3.connect(path)
     try:
-        cursor = conn.execute("SELECT Type,IsSender,CreateTime,StrTalker,StrContent from MSG WHERE StrTalker = '%s'"% wxid+" ORDER BY CreateTime ASC")
+        cursor = conn.execute("SELECT Type,IsSender,CreateTime,StrTalker,StrContent from MSG WHERE StrTalker = '%s'"% uuid+" ORDER BY CreateTime ASC")
         cursor = cursor.fetchall()
     except Exception as ex:
         print("[-]不存在该聊天的聊天记录，这是异常信息: ",ex)
         conn.close()
         return False,ex
     desktop_path = os.path.abspath(".")  # 存放路径
-    full_path =  "%s\\%s\\%s(%s).csv"%(desktop_path,workDirName,chatname,wxid) 
+    full_path =  "%s\\%s\\%s(%s).csv"%(desktop_path,workDirName,nick+" "+wxid,uuid) 
 
     folder = os.path.exists(desktop_path+"\\"+workDirName)
     if not folder:
@@ -34,7 +34,10 @@ def msg_export(path,wxid,chatname,exportId):
     else:
         file = open(full_path, 'w', encoding='utf-8-sig')
         # 写入表头
+        file.write("昵称,%s\n"% nick)
+        file.write("微信号,%s\n"% wxid)
         file.write("时间,对方,你的回复\n")
+
 
     for msg in cursor:
         date=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(msg[2])) #转换时间戳
