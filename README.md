@@ -21,6 +21,9 @@ pip install pywin32
 pip install pymem
 pip install pycryptodome
 ```
+## 公告 / NOTICE
+
+由于学业繁忙 无法及时处理issue和更新程序 请谅解
 
 ## 运行方法 / RUNNING METHOD
 
