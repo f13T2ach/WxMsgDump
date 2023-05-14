@@ -47,10 +47,11 @@ def main():
     win_user = os.path.expandvars('$HOMEPATH')
     wx_config = open(os.getenv("SystemDrive") + win_user + '\\AppData\\Roaming\\Tencent\\WeChat\\All Users\\config\\3ebffe94.ini')
 
-    if wx_config.read() == 'MyDocument:':
-        wx_path = shell.SHGetFolderPath(0, 5, None, 0)+"\\WeChat Files\\"+wxid+"\\Msg" # 如果目录在 文档 下
+    path = wx_config.read()
+    if path == 'MyDocument:':
+        wx_path = shell.SHGetFolderPath(0, 5, None, 0) + "\\WeChat Files\\" + wxid + "\\Msg"  # 如果目录在 文档 下
     else:
-        wx_path = wx_config.read() + "\\WeChat Files\\"+wxid+"\\Msg"
+        wx_path = path + "\\WeChat Files\\" + wxid + "\\Msg"
     dir_path = wx_path + "\\Multi"
 
     print("[+]微信号: "+wxprofile+" 工作路径: "+wx_path)
