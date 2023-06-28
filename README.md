@@ -6,6 +6,12 @@
 
 </div>
 
+## 公告 / NOTICE
+
+由于学业繁忙，部分的issue没有得到解决，非常抱歉。
+
+计划在后续几日进行调试和bug复现，届时会回复得到解决的issue并及时push。
+
 ## 介绍 / INTRODUCTION
 
 **运行要求:** Python 2.0以上环境
@@ -21,9 +27,6 @@ pip install pywin32
 pip install pymem
 pip install pycryptodome
 ```
-## 公告 / NOTICE
-
-由于学业繁忙 无法及时处理issue和更新程序 请谅解
 
 ## 运行方法 / RUNNING METHOD
 
