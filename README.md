@@ -70,7 +70,7 @@ python Main.py
 
 ## 贡献墙 / CONTRIBUTION
 
-**注:** 提出有效Issue，或者建设性意见的，可以加入贡献墙
+**ruitong1983** 提出数据溢出的异常并给出有效解决方案
 
 ## 警告 / WARNING
 
