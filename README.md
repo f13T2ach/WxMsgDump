@@ -97,3 +97,9 @@ python Main.py
 **您应该在下载保存，编译使用本项目的24小时内，删除本项目的源代码和（编译出的）程序。**
 
 ## 更新历史 / UPDATE HISTORY 
+
+<div align="center">
+
+**INSIDE HER NEW BALENCIAGA**
+
+</div>
