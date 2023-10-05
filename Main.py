@@ -1,17 +1,15 @@
-# WARNING | 警告
-# 任何组织和个人都不得利用本项目窥探、篡改用户的聊天记录；
-# Any organization or person can not use this program to peep into or edit the chat history which belongs to Wechat users;
-# 中华人民共和国公民的聊天记录受到法律保护。
-# The personal chat history of citizens of the People's Republic of China is protected by law.
 # 版本号
 VER = "V1.1"
-import GetWeChatInfo
+import WechatManager
 import CrackWeChatDB
 import os
 import sys
 import sqlite3
 import SQLManager
 import keyboard
+import pymem
+from pymem import Pymem
+from pick import pick
 from win32com.shell import shell
 
 
@@ -33,13 +31,24 @@ def main():
 
     print("WxMsgDump%s | 微信聊天记录导出"%VER)
     print()
-    print("Copyright(c) UvgenTechno 2023 Authorized")
+    print("Copyright(c) Jiang")
     print("----------------------------------------")
-    print("[+]Follow me on Github: https://github.com/f13T2ach/WxMsgDump")
 
-    # 获取密钥和其它个人信息
-    ret =  GetWeChatInfo.main()
-    aeskey = ret[0]
+    # 定义对象
+    try:
+        wechat = Pymem("WeChat.exe")
+        ret = WechatManager.Wechat(wechat).GetInfo()
+        keyAddress = ret[0]
+        aeskey = ret[1]
+    except pymem.exception.ProcessNotFound:
+        print("[!]微信没有登录")
+    except pymem.exception.CouldNotOpenProcess:
+        print("[!]权限不足")
+    except Exception as e:
+        print(e)
+    
+    wx =  WechatManager
+    ret = wx.Wechat(wechat).GetUserBasicInfo(keyAddress)
     wxid = ret[1]
     wxprofile = ret[2]
 
@@ -122,9 +131,8 @@ def main():
 
     print("[+]正在获取聊天列表")
     wxlist = SQLManager.get_chatlist(micromsg_path)
-
     while True:
-        print("[+]请输入要导出的聊天名称，或者你给他/她的备注。空表示退出操作")
+        print("[+]请输入要导出的聊天名称，或者你给他/她的备注。空表示退出操作。")
         aimChat = input("[>]")
         if aimChat=="":
             break
@@ -142,7 +150,9 @@ def main():
                 print("=============END OUTPUT============")
         if repeat_count == 1:
             print("[!]找不到此聊天: ",aimChat)
-
+    del_decryptf(wx_path)
+    del_decryptf(dir_path)
+                
 
 
 def decryptMsg(res,dir_path,wx_path,aeskey):
