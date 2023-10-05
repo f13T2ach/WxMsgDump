@@ -68,13 +68,15 @@ python Main.py
 
 ## 鸣谢 / ACKOWNLEDGEMENT
 
-**lich0821 / 微信数据库逆向和数据库密钥逆向** https://github.com/lich0821/WeChatDB
+**SnowMeteors / GetWeChatKey** https://github.com/SnowMeteors/GetWeChatKey
 
 **x1hy9 / 微信进程逆向** https://github.com/x1hy9/WeChatUserDB
 
 ## 贡献墙 / CONTRIBUTION
 
 **ruitong1983** 提出数据溢出的异常并给出有效解决方案
+
+**JoeQinOvO** 提出算法更新的解决方案
 
 ## 警告 / WARNING
 
