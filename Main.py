@@ -31,7 +31,7 @@ def main():
 
     print("WxMsgDump%s | 微信聊天记录导出"%VER)
     print()
-    print("Copyright(c) Jiang")
+    print("Copyright(c) Redmaple")
     print("----------------------------------------")
 
     # 定义对象
